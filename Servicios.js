@@ -1,36 +1,50 @@
-import React from "react";
+
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Alert } from "react-native";
+import React, { useState, useEffect } from 'react';
+
 
 export default function Servicios({ navigation }) {
     // Datos de ejemplo - reemplaza con tus datos reales
-    const usuario = "Juan Pérez";
+    // const usuario = "Juan Pérez";
     
-    const serviciosActivos = [
-        {
-            id: 1,
-            nombre: "Internet Fibra Óptica",
-            cliente: "Juan Pérez García",
-            descripcion: "Plan empresarial de 100 Mbps con IP fija y soporte técnico 24/7",
-            direccion: "Av. Principal #123, Col. Centro"
-        },
-        {
-            id: 2,
-            nombre: "Televisión Digital",
-            cliente: "María López Rodríguez",
-            descripcion: "Paquete premium con 200+ canales HD y servicios de streaming",
-            direccion: "Calle Secundaria #456, Col. Norte"
-        },
-        {
-            id: 3,
-            nombre: "Telefonía Fija",
-            cliente: "Carlos Mendoza Silva",
-            descripcion: "Línea residencial con llamadas ilimitadas nacionales",
-            direccion: "Av. Principal #123, Col. Centro"
-        }
-    ];
+    // const serviciosActivos = [
+    //     {
+    //         id: 1,
+    //         nombre: "Internet Fibra Óptica",
+    //         cliente: "Juan Pérez García",
+    //         descripcion: "Plan empresarial de 100 Mbps con IP fija y soporte técnico 24/7",
+    //         direccion: "Av. Principal #123, Col. Centro"
+    //     },
+    //     {
+    //         id: 2,
+    //         nombre: "Televisión Digital",
+    //         cliente: "María López Rodríguez",
+    //         descripcion: "Paquete premium con 200+ canales HD y servicios de streaming",
+    //         direccion: "Calle Secundaria #456, Col. Norte"
+    //     },
+    //     {
+    //         id: 3,
+    //         nombre: "Telefonía Fija",
+    //         cliente: "Carlos Mendoza Silva",
+    //         descripcion: "Línea residencial con llamadas ilimitadas nacionales",
+    //         direccion: "Av. Principal #123, Col. Centro"
+    //     }
+    // ];
+
+    const [serviciosActivos, setServiciosActivos] = useState([]);
+    const usuario = "Juan Pérez"; 
+
+    useEffect(() => {
+        fetch('https://127.0.0.1:8000//api/servicios') 
+            .then(response => response.json())
+            .then(data => setServiciosActivos(data))
+            .catch(error => {
+                console.error(error);
+                Alert.alert('Error', 'No se pudieron cargar los servicios.');
+            });
+    }, []);
 
     const handleIrAFormulario = (servicio) => {
-        // Navegar a la vista del formulario pasando los datos del servicio
         if (navigation) {
             navigation.navigate('Formulario', { servicio: servicio });
         } else {

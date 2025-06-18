@@ -8,7 +8,7 @@ const api = axios.create({
     headers:{
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-    },
+    }, 
 });
 
 api.interceptors.request.use(

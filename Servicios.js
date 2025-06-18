@@ -35,7 +35,7 @@ export default function Servicios({ navigation }) {
     const usuario = "Juan Pérez"; 
 
     useEffect(() => {
-        fetch('https://127.0.0.1:8000//api/servicios') 
+        fetch('https://videsa.smstudio.biz/api/servicios') 
             .then(response => response.json())
             .then(data => setServiciosActivos(data))
             .catch(error => {

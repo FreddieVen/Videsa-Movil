@@ -53,6 +53,7 @@ export default function Servicios({ navigation }) {
                 <Text style={styles.clienteNombre}>{item.cliente}</Text>
                 <Text style={styles.servicioDescripcion}>{item.descripcion}</Text>
                 <Text style={styles.servicioDireccion}>{item.direccion}</Text>
+                <Text style={styles.servicioDireccion}>{item.responsable} </Text>
             </View>
             <TouchableOpacity 
                 style={styles.formularioButton}
@@ -210,6 +211,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#6B7280',
         lineHeight: 20,
+        marginBottom:7
     },
     formularioButton: {
         backgroundColor: '#25a74b',
@@ -224,4 +226,9 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '600',
     },
+    rows:{
+        flexDirection: 'row',
+        marginBottom: 10,
+        gap: 10,
+    }
 });

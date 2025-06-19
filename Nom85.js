@@ -1,10 +1,11 @@
 import React, {useState} from "react";
 import { View, ScrollView, TextInput, TouchableOpacity, StyleSheet, Text } from "react-native";
-import NavBar  from "./components/Navbar";
+import NavBar  from "./components/Nav";
 import Header from "./components/Forms/Header";
 import DataCliente from "./components/Forms/Data_cliente";
 import Container from "./components/Container";
 import FormContainer from "./components/Forms/Form_container";
+import Datos_equipo from "./components/Forms/Nom85/Datos_equipo";
 
 export default function Nom85(){
     return(
@@ -19,7 +20,7 @@ export default function Nom85(){
                 </FormContainer>
 
                 <FormContainer>
-                    
+                    <Datos_equipo />
                 </FormContainer>
             </Container>
         </ScrollView>

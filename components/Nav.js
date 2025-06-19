@@ -1,7 +1,7 @@
 import React from "react";
 import { View, ScrollView, TextInput, TouchableOpacity, StyleSheet, Text, Alert } from "react-native";
 
-export default function Nom85({usuario, onCerrarSesion}){
+export default function Navbar({usuario, onCerrarSesion}){
 
     const handleCerrarSesion = () => {
         Alert.alert(

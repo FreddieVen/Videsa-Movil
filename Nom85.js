@@ -1,77 +1,33 @@
-import React from "react";
+import React, {useState} from "react";
 import { View, ScrollView, TextInput, TouchableOpacity, StyleSheet, Text } from "react-native";
+import NavBar  from "./components/Nav";
+import Header from "./components/Forms/Header";
+import DataCliente from "./components/Forms/Data_cliente";
+import Container from "./components/Container";
+import FormContainer from "./components/Forms/Form_container";
+import Datos_equipo from "./components/Forms/Nom85/Datos_equipo";
+import Otros_datos from "./components/Forms/Nom85/Otros_datos";
 
 export default function Nom85(){
     return(
-        <View style={styles.container}>
-            <View style={styles.navbar}>
-                <View style={styles.navContent}>
-                    <View style={styles.logoContainer}>
-                        <Text style={styles.logo}>Videsa</Text>
-                    </View>
-                    <View style={styles.userInfo}>
-                        <Text style={styles.userName}></Text>
-                        <TouchableOpacity style={styles.logoutButton}>
-                            <Text style={styles.logoutText}>Cerrar Sesión</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </View>
-        </View>
+        <ScrollView>
+            {/*Importanción de la Navbar */}
+            <NavBar/>
+
+            <Container>
+                <FormContainer>
+                    <Header titulo={"Formulario de Norma 085"}/>
+                    <DataCliente fechaEvaluacion={"01-06-25"} razon_social={"Walmart S.A de C.V"} />
+                </FormContainer>
+
+                <FormContainer>
+                    <Datos_equipo />
+                </FormContainer>
+
+                <FormContainer>
+                    <Otros_datos />
+                </FormContainer>
+            </Container>
+        </ScrollView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#F8FAFC',
-    },navbar: {
-        backgroundColor: '#25a74b',
-        paddingTop: 50, // Para el status bar
-        paddingBottom: 15,
-        paddingHorizontal: 20,
-        shadowColor: '#000',
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.1,
-        shadowRadius: 3.84,
-        elevation: 5,
-    },
-    navContent: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    logoContainer: {
-        flex: 1,
-    },
-    logo: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#FFFFFF',
-    },
-    userInfo: {
-        alignItems: 'flex-end',
-    },
-    userName: {
-        fontSize: 16,
-        color: '#FFFFFF',
-        marginBottom: 5,
-        fontWeight: '500',
-    },
-    logoutButton: {
-        backgroundColor: 'rgba(255, 255, 255, 0.2)',
-        paddingHorizontal: 12,
-        paddingVertical: 6,
-        borderRadius: 15,
-        borderWidth: 1,
-        borderColor: 'rgba(255, 255, 255, 0.3)',
-    },
-    logoutText: {
-        color: '#FFFFFF',
-        fontSize: 12,
-        fontWeight: '500',
-    },
-});

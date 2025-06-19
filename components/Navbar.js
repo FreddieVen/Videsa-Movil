@@ -1,20 +1,39 @@
 import React from "react";
-import { View, ScrollView, TextInput, TouchableOpacity, StyleSheet, Text } from "react-native";
+import { View, ScrollView, TextInput, TouchableOpacity, StyleSheet, Text, Alert } from "react-native";
 
-export default function Nom85(){
+export default function Nom85({usuario, onCerrarSesion}){
+
+    const handleCerrarSesion = () => {
+        Alert.alert(
+            "Cerrar Sesión",
+            "¿Estás seguro de que deseas cerrar sesión?",
+            [
+                {
+                    text: "Cancelar",
+                    style: "cancel"
+                },
+                {
+                    text: "Cerrar Sesión",
+                    onPress: onCerrarSesion
+                }
+            ]
+        );
+    };
+
     return(
-        <View style={styles.container}>
-            <View style={styles.navbar}>
-                <View style={styles.navContent}>
-                    <View style={styles.logoContainer}>
-                        <Text style={styles.logo}>Videsa</Text>
-                    </View>
-                    <View style={styles.userInfo}>
-                        <Text style={styles.userName}></Text>
-                        <TouchableOpacity style={styles.logoutButton}>
-                            <Text style={styles.logoutText}>Cerrar Sesión</Text>
-                        </TouchableOpacity>
-                    </View>
+        <View style={styles.navbar}>
+            <View style={styles.navContent}>
+                <View style={styles.logoContainer}>
+                    <Text style={styles.logo}>Videsa</Text>
+                </View>
+                <View style={styles.userInfo}>
+                    <Text style={styles.userName}>{usuario}</Text>
+                    <TouchableOpacity 
+                        style={styles.logoutButton}
+                        onPress={handleCerrarSesion}
+                    >
+                        <Text style={styles.logoutText}>Cerrar Sesión</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>

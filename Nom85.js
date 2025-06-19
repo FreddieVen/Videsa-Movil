@@ -6,6 +6,7 @@ import DataCliente from "./components/Forms/Data_cliente";
 import Container from "./components/Container";
 import FormContainer from "./components/Forms/Form_container";
 import Datos_equipo from "./components/Forms/Nom85/Datos_equipo";
+import Otros_datos from "./components/Forms/Nom85/Otros_datos";
 
 export default function Nom85(){
     return(
@@ -21,6 +22,10 @@ export default function Nom85(){
 
                 <FormContainer>
                     <Datos_equipo />
+                </FormContainer>
+
+                <FormContainer>
+                    <Otros_datos />
                 </FormContainer>
             </Container>
         </ScrollView>

@@ -7,6 +7,7 @@ import Container from "./components/Container";
 import FormContainer from "./components/Forms/Form_container";
 import Datos_equipo from "./components/Forms/Nom85/Datos_equipo";
 import Otros_datos from "./components/Forms/Nom85/Otros_datos";
+import Datos_campo from "./components/Forms/Nom85/Datos_campo";
 
 export default function Nom85(){
     return(
@@ -26,6 +27,10 @@ export default function Nom85(){
 
                 <FormContainer>
                     <Otros_datos />
+                </FormContainer>
+
+                <FormContainer>
+                    <Datos_campo />
                 </FormContainer>
             </Container>
         </ScrollView>

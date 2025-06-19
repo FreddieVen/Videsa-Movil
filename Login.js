@@ -10,6 +10,7 @@ import {
   Platform,
   Alert,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function LoginScreen ({ navigation }) {
   const [email, setEmail] = useState('');
@@ -53,6 +54,10 @@ export default function LoginScreen ({ navigation }) {
       }
 
       const data = await response.json();
+ 
+
+      await AsyncStorage.setItem('auth_token', data.token);
+      await AsyncStorage.setItem('user_info', JSON.stringify(data.user));
       Alert.alert('Éxito', data.message || 'Inicio de sesión exitoso.');
       navigation.replace('Servicios');
     } catch (error) {

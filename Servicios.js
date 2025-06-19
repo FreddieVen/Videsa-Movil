@@ -1,104 +1,139 @@
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Alert } from "react-native";
 import React, { useState, useEffect } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  Alert
+} from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Servicios({ navigation }) {
-    const [serviciosActivos, setServiciosActivos] = useState([]);
-    const usuario = "Juan Pérez"; 
+  const [serviciosActivos, setServiciosActivos] = useState([]);
+  const [usuarioNombre, setUsuarioNombre] = useState('');
 
-    useEffect(() => {
-        fetch('https://videsa.smstudio.biz/api/servicios') 
-            .then(response => response.json())
-            .then(data => setServiciosActivos(data))
-            .catch(error => {
-                console.error(error);
-                Alert.alert('Error', 'No se pudieron cargar los servicios.');
-            });
-    }, []);
+  useEffect(() => {
+    const cargarDatos = async () => {
+      try {
+        const token = await AsyncStorage.getItem('auth_token');
+        const userInfo = await AsyncStorage.getItem('user_info');
 
-    const handleIrAFormulario = (servicio) => {
-        if (navigation) {
-            navigation.navigate('Formulario', { servicio: servicio });
-        } else {
-            // Si no hay navegación configurada, mostrar un alert de ejemplo
-            Alert.alert(
-                "Navegar a Formulario",
-                `Ir al formulario para el servicio: ${servicio.nombre}`
-            );
+        if (!token) {
+          Alert.alert('Sesión caducada', 'Inicia sesión nuevamente.');
+          navigation.replace('Login');
+          return;
         }
-    };
-    const handleCerrarSesion = () => {
-        Alert.alert(
-            "Cerrar Sesión",
-            "¿Estás seguro de que deseas cerrar sesión?",
-            [
-                {
-                    text: "Cancelar",
-                    style: "cancel"
-                },
-                {
-                    text: "Cerrar Sesión",
-                    onPress: () => {
-                        // Aquí implementas la lógica para cerrar sesión
-                        console.log("Cerrando sesión...");
-                    }
-                }
-            ]
-        );
+
+        console.log('🔐 Token que se envía al backend:', token);
+
+        if (userInfo) {
+          const user = JSON.parse(userInfo);
+          setUsuarioNombre(user.nombre || 'Usuario');
+        }
+
+        const response = await fetch('https://videsa.smstudio.biz/api/servicios', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: 'application/json',
+          }
+        });
+
+        if (!response.ok) {
+          let errorDetails = {};
+          try {
+            errorDetails = await response.json();
+            console.log('❌ Respuesta del backend:', errorDetails);
+          } catch (e) {
+            console.log('⚠️ La respuesta no fue JSON');
+          }
+          throw new Error(errorDetails.message || 'Error al obtener los servicios');
+        }
+
+        const data = await response.json();
+        setServiciosActivos(data);
+      } catch (error) {
+        console.error('🧨 Error en cargarDatos:', error.message);
+        Alert.alert('Error', error.message || 'No se pudieron cargar los servicios.');
+      }
     };
 
-    const renderServicio = ({ item }) => (
-        <View style={styles.card}>
-            <View style={styles.cardContent}>
-                <Text style={styles.servicioNombre}>{item.nombre}</Text>
-                <Text style={styles.clienteNombre}>{item.cliente}</Text>
-                <Text style={styles.servicioDescripcion}>{item.descripcion}</Text>
-                <Text style={styles.servicioDireccion}>{item.direccion}</Text>
-                <Text style={styles.servicioDireccion}>{item.responsable} </Text>
-            </View>
-            <TouchableOpacity 
-                style={styles.formularioButton}
-                onPress={() => handleIrAFormulario(item)}
+    cargarDatos();
+  }, []);
+
+  const handleCerrarSesion = () => {
+    Alert.alert(
+      "Cerrar Sesión",
+      "¿Estás seguro de que deseas cerrar sesión?",
+      [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Cerrar Sesión",
+          onPress: async () => {
+            await AsyncStorage.removeItem('auth_token');
+            await AsyncStorage.removeItem('user_info');
+            navigation.replace('Login');
+          }
+        }
+      ]
+    );
+  };
+
+  const handleIrAFormulario = (servicio) => {
+    navigation.navigate('Formulario', { servicio });
+  };
+
+  const renderServicio = ({ item }) => (
+    <View style={styles.card}>
+      <View style={styles.cardContent}>
+        <Text style={styles.servicioNombre}>{item.nombre}</Text>
+        <Text style={styles.clienteNombre}>{item.cliente}</Text>
+        <Text style={styles.servicioDescripcion}>{item.descripcion}</Text>
+        <Text style={styles.servicioDireccion}>{item.direccion}</Text>
+      </View>
+      <TouchableOpacity
+        style={styles.formularioButton}
+        onPress={() => handleIrAFormulario(item)}
+      >
+        <Text style={styles.formularioButtonText}>Gestionar Servicio</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.navbar}>
+        <View style={styles.navContent}>
+          <View style={styles.logoContainer}>
+            <Text style={styles.logo}>Videsa</Text>
+          </View>
+          <View style={styles.userInfo}>
+            <Text style={styles.userName}>{usuarioNombre}</Text>
+            <TouchableOpacity
+              style={styles.logoutButton}
+              onPress={handleCerrarSesion}
             >
-                <Text style={styles.formularioButtonText}>Gestionar Servicio</Text>
+              <Text style={styles.logoutText}>Cerrar Sesión</Text>
             </TouchableOpacity>
+          </View>
         </View>
-    );
+      </View>
 
-    return (
-        <View style={styles.container}>
-            {/* Navbar */}
-            <View style={styles.navbar}>
-                <View style={styles.navContent}>
-                    <View style={styles.logoContainer}>
-                        <Text style={styles.logo}>Videsa</Text>
-                    </View>
-                    <View style={styles.userInfo}>
-                        <Text style={styles.userName}>{usuario}</Text>
-                        <TouchableOpacity 
-                            style={styles.logoutButton}
-                            onPress={handleCerrarSesion}
-                        >
-                            <Text style={styles.logoutText}>Cerrar Sesión</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </View>
-
-            {/* Contenido principal */}
-            <View style={styles.content}>
-                <Text style={styles.title}>Servicios Activos</Text>
-                
-                <FlatList
-                    data={serviciosActivos}
-                    renderItem={renderServicio}
-                    keyExtractor={(item) => item.id.toString()}
-                    style={styles.servicesList}
-                    showsVerticalScrollIndicator={false}
-                />
-            </View>
-        </View>
-    );
+      <View style={styles.content}>
+        <Text style={styles.title}>Servicios Activos</Text>
+        <FlatList
+          data={serviciosActivos}
+          renderItem={renderServicio}
+          keyExtractor={(item) => item.id.toString()}
+          style={styles.servicesList}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
+    </View>
+  );
 }
+
+
 
 const styles = StyleSheet.create({
     container: {

@@ -43,7 +43,7 @@ export default function FotosCaldera() {
       setFotoConducto(resultado.assets[0].uri);
     }
   };
-
+ 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {/* Navbar */}

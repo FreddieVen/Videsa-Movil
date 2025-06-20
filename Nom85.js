@@ -28,9 +28,7 @@ export default function Nom85(){
                 <FormContainer>
                     <Otros_datos />
                 </FormContainer>
-                <FormContainer>
-                    <Datos_estratificacion />
-                </FormContainer>
+              
             </Container>
         </ScrollView>
     );
